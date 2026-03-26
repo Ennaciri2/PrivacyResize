@@ -253,3 +253,4 @@ The repo is designed to pass:
 - `pnpm build`
 
 If you change Firebase rules, route patterns, or environment handling, rerun all four before deploying.
+# PrivacyResize
