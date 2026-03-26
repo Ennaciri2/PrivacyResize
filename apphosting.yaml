@@ -1,0 +1,11 @@
+runConfig:
+  cpu: 1
+  memoryMiB: 512
+  minInstances: 0
+  maxInstances: 3
+env:
+  - variable: NEXT_PUBLIC_ENABLE_ADS
+    value: "false"
+    availability:
+      - BUILD
+      - RUNTIME

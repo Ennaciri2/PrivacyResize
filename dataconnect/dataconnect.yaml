@@ -1,0 +1,12 @@
+specVersion: "v1"
+serviceId: "sizeimage"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "sizeimage-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

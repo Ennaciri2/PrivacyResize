@@ -1,0 +1,49 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+
+    match /users/{userId} {
+      allow read, create, update, delete: if isOwner(userId);
+    }
+
+    match /savedPresets/{presetId} {
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /toolUsage/{usageId} {
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /feedback/{feedbackId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /seoPresets/{slug} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /blogDrafts/{slug} {
+      allow read, write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
