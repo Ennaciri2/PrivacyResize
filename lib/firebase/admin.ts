@@ -44,9 +44,13 @@ export async function getRemoteSeoPreset(slug: string): Promise<SeoPreset | null
     return null;
   }
 
-  const snapshot = await db.collection("seoPresets").doc(slug).get();
+  try {
+    const snapshot = await db.collection("seoPresets").doc(slug).get();
 
-  return snapshot.exists ? (snapshot.data() as SeoPreset) : null;
+    return snapshot.exists ? (snapshot.data() as SeoPreset) : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function listRemoteSeoPresets(): Promise<SeoPreset[]> {
@@ -56,6 +60,10 @@ export async function listRemoteSeoPresets(): Promise<SeoPreset[]> {
     return [];
   }
 
-  const snapshots = await db.collection("seoPresets").get();
-  return snapshots.docs.map((snapshot) => snapshot.data() as SeoPreset);
+  try {
+    const snapshots = await db.collection("seoPresets").get();
+    return snapshots.docs.map((snapshot) => snapshot.data() as SeoPreset);
+  } catch {
+    return [];
+  }
 }
