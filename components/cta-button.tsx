@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-type CTAButtonVariant = "primary" | "secondary";
+type CTAButtonVariant = "primary" | "secondary" | "light";
 
 interface CTAButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
@@ -18,6 +18,8 @@ const variantStyles: Record<CTAButtonVariant, string> = {
     "bg-cta-gradient text-white shadow-[0_22px_55px_rgba(11,45,85,0.24)] hover:brightness-[1.03] hover:shadow-[0_28px_68px_rgba(11,45,85,0.3)]",
   secondary:
     "border border-border-strong bg-white/88 text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.82)] hover:border-brand-cyan/60 hover:bg-white hover:text-brand-navy",
+  light:
+    "bg-white text-brand-navy shadow-[0_22px_55px_rgba(11,45,85,0.24)] hover:bg-white/96 hover:brightness-100 hover:shadow-[0_28px_68px_rgba(11,45,85,0.3)]",
 };
 
 const baseClassName =

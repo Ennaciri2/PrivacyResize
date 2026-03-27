@@ -10,7 +10,7 @@ import { StructuredData } from "@/components/structured-data";
 import { ToolShell } from "@/components/tool-shell";
 import { TrustSection } from "@/components/trust-section";
 import { Card } from "@/components/ui/card";
-import { FEATURED_PRESET_SLUGS, HOME_FAQ, PRODUCT_PILLARS, SITE_DESCRIPTION } from "@/data/site";
+import { FEATURED_PRESET_SLUGS, HOME_FAQ, PRODUCT_PILLARS } from "@/data/site";
 import { seoPresets } from "@/data/seo-presets";
 import {
   buildAbsoluteUrl,
@@ -19,8 +19,9 @@ import {
 } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
-  title: "PrivacyResize | Privacy-First Image Resizer",
-  description: SITE_DESCRIPTION,
+  title: "PrivacyResize – Free Image Resizer (No Upload, 100% Private)",
+  description:
+    "Resize images instantly with PrivacyResize. Bulk image resizer for Instagram, YouTube, Amazon, and more. No upload required, 100% private and fast.",
   path: "/",
   keywords: [
     "privacy-first image resizer",
@@ -135,7 +136,10 @@ export default function HomePage() {
       <FAQSection eyebrow="FAQ" items={HOME_FAQ} title="Questions users ask before they switch tools" />
 
       <section className="section-shell py-18">
-        <Card className="overflow-hidden rounded-[2rem] bg-[linear-gradient(135deg,rgba(11,45,85,0.98),rgba(18,122,107,0.94)_56%,rgba(20,126,239,0.92))] p-8 text-white sm:p-10">
+        <Card
+          className="overflow-hidden rounded-[2rem] bg-[linear-gradient(135deg,rgba(11,45,85,0.98),rgba(18,122,107,0.94)_56%,rgba(20,126,239,0.92))] p-8 text-white sm:p-10"
+          variant="plain"
+        >
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="space-y-4">
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/76">Launch the tool</p>
@@ -148,16 +152,16 @@ export default function HomePage() {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
-              <CTAButton className="bg-white text-brand-navy hover:bg-white/96" href="/tool" showArrow>
+              <CTAButton href="/tool" >
                 Open the tool
               </CTAButton>
-              <CTAButton
-                className="border-white/24 bg-white/12 text-white hover:border-white/40 hover:bg-white/18 hover:text-white"
+                <CTAButton
+                className="border-green-500/24 bg-green-500/12 text-white hover:border-green-400/40 hover:bg-green-500/18 hover:text-white"
                 href="/presets"
                 variant="secondary"
-              >
+                >
                 Browse presets
-              </CTAButton>
+                </CTAButton>
             </div>
           </div>
         </Card>

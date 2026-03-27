@@ -423,7 +423,10 @@ export function ToolShell({
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden rounded-[2rem] border-border/70 bg-[linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,255,255,0.76))] p-6 sm:p-7">
+      <Card
+        className="overflow-hidden rounded-[2rem] border-border/70 bg-[linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,255,255,0.76))] p-6 sm:p-7"
+        variant="plain"
+      >
         <div className="grid gap-5 xl:grid-cols-[1.35fr_0.65fr] xl:items-center">
           <div className="space-y-4">
             <div className="space-y-2">
