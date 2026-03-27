@@ -15,15 +15,14 @@ export default function AppleIcon() {
       <div
         style={{
           alignItems: "center",
-          background: "linear-gradient(180deg, #0d1720 0%, #112735 100%)",
-          borderRadius: 36,
+          background: "transparent",
           display: "flex",
           height: "100%",
           justifyContent: "center",
           width: "100%",
         }}
       >
-        <BrandMark style={{ height: 152, width: 152 }} title="PrivacyResize icon" />
+        <BrandMark style={{ height: 180, width: 180 }} title="PrivacyResize icon" />
       </div>
     ),
     size,

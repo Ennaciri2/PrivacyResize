@@ -7,20 +7,23 @@ import { useEffect, useRef, useState } from "react";
 
 import { BatchQueue } from "@/components/batch-queue";
 import { DownloadPanel } from "@/components/download-panel";
+import { OutputSettings } from "@/components/output-settings";
 import { PresetSelector } from "@/components/preset-selector";
+import { useAuth } from "@/components/providers/auth-provider";
 import { ResizeControls } from "@/components/resize-controls";
 import { UploadZone } from "@/components/upload-zone";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { exactSizePresets } from "@/data/exact-sizes";
 import { seoPresets } from "@/data/seo-presets";
-import { useAuth } from "@/components/providers/auth-provider";
 import { getImageDimensions, processImage } from "@/lib/browser-image";
 import { savePresetForUser, trackToolUsage } from "@/lib/firebase/firestore";
 import { clamp, triggerDownload } from "@/lib/utils";
 import type { ToolConfig, ToolImageItem } from "@/types";
 
-const Cropper = dynamic(() => import("react-easy-crop"), { ssr: false }) as unknown as typeof import("react-easy-crop").default;
+const Cropper = dynamic(() => import("react-easy-crop"), {
+  ssr: false,
+}) as unknown as typeof import("react-easy-crop").default;
 
 const RECENT_PRESETS_KEY = "privacyresize:recent-presets";
 
@@ -104,6 +107,8 @@ export function ToolShell({
   }, []);
 
   const activeItem = items.find((item) => item.id === activeImageId) ?? null;
+  const processedItems = items.filter((item) => item.status === "done");
+  const progressRatio = progress.total ? Math.min((progress.current / progress.total) * 100, 100) : 0;
 
   function updateConfig(nextConfig: Partial<ToolConfig>) {
     setConfig((current) => ({
@@ -418,34 +423,73 @@ export function ToolShell({
 
   return (
     <div className="space-y-6">
-      <Card className="border-accent/18 bg-accent-soft/65">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">Local-first workflow</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
-              Resize and export right in the browser
-            </h2>
-          </div>
-          {progress.total ? (
-            <div className="min-w-56 space-y-2 rounded-[1.4rem] border border-accent/16 bg-white/70 p-4">
-              <div className="flex items-center justify-between text-sm text-foreground/68">
-                <span>Batch progress</span>
-                <span className="font-semibold text-foreground">
-                  {progress.current}/{progress.total}
-                </span>
-              </div>
-              <div className="h-2 rounded-full bg-accent-soft">
-                <div
-                  className="h-2 rounded-full bg-accent transition-all"
-                  style={{ width: `${(progress.current / progress.total) * 100}%` }}
-                />
-              </div>
+      <Card className="overflow-hidden rounded-[2rem] border-border/70 bg-[linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,255,255,0.76))] p-6 sm:p-7">
+        <div className="grid gap-5 xl:grid-cols-[1.35fr_0.65fr] xl:items-center">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">Local-first workflow</p>
+              <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-[2rem]">
+                Upload, choose a target, process locally, export clean files fast
+              </h2>
             </div>
-          ) : null}
+            <p className="max-w-3xl text-sm leading-7 text-foreground/66 sm:text-[0.96rem]">
+              The layout keeps the first action obvious, keeps privacy visible, and keeps export controls separate from
+              editing so the path from upload to ZIP stays easy to scan.
+            </p>
+            <div className="flex flex-wrap gap-2.5">
+              {[
+                "No login required to start",
+                "Images stay on-device by default",
+                "Presets, exact sizes, JPG, PNG, WebP",
+              ].map((item) => (
+                <span
+                  className="rounded-full border border-border bg-white/84 px-4 py-2 text-sm font-medium text-foreground/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.82)]"
+                  key={item}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
+            <div className="rounded-[1.5rem] border border-border bg-white/82 px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.82)]">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-foreground/46">Preset</p>
+              <p className="mt-2 text-lg font-semibold text-foreground">{getPresetLabel(config)}</p>
+            </div>
+            <div className="rounded-[1.5rem] border border-border bg-white/82 px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.82)]">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-foreground/46">Queue</p>
+              <p className="mt-2 text-lg font-semibold text-foreground">{items.length} loaded</p>
+            </div>
+            <div className="rounded-[1.5rem] border border-border bg-white/82 px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.82)]">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-foreground/46">Exports</p>
+              <p className="mt-2 text-lg font-semibold text-foreground">{processedItems.length} ready</p>
+            </div>
+          </div>
         </div>
+        {progress.total ? (
+          <div className="mt-5 rounded-[1.5rem] border border-brand-cyan/24 bg-[linear-gradient(135deg,rgba(18,122,107,0.09),rgba(19,214,215,0.12))] p-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-semibold text-foreground">Batch progress</p>
+                <p className="text-sm text-foreground/62">
+                  {progress.current} of {progress.total} image{progress.total > 1 ? "s" : ""} processed
+                </p>
+              </div>
+              <span className="text-sm font-semibold text-brand-navy">{Math.round(progressRatio)}%</span>
+            </div>
+            <div className="mt-3 h-2 rounded-full bg-accent-soft">
+              <div
+                className="h-2 rounded-full bg-[linear-gradient(90deg,var(--color-accent),var(--color-brand-cyan),var(--color-brand-blue))] transition-all"
+                style={{ width: `${progressRatio}%` }}
+              />
+            </div>
+          </div>
+        ) : null}
       </Card>
+
       <UploadZone disabled={isProcessing} onFilesAdded={(files) => void addFiles(files)} />
-      <div className="grid gap-6 xl:grid-cols-[1.15fr_1.1fr_0.95fr]">
+
+      <div className="grid gap-6 xl:grid-cols-[1fr_1.08fr_0.94fr]">
         <div className="space-y-6">
           <PresetSelector
             exactSizes={exactSizePresets}
@@ -455,23 +499,33 @@ export function ToolShell({
             recentPresets={recentPresets}
             selectedPresetSlug={config.presetSlug}
           />
-          <BatchQueue
-            activeImageId={activeImageId}
-            items={items}
-            onClearAll={clearAll}
-            onRemoveImage={removeImage}
-            onSelectImage={setActiveImageId}
+          <ResizeControls
+            busy={isProcessing}
+            config={config}
+            onConfigChange={updateConfig}
+            onDimensionChange={updateDimensions}
+            onReset={resetAll}
           />
+          <OutputSettings config={config} onConfigChange={updateConfig} />
         </div>
+
         <div className="space-y-6">
-          <Card className="space-y-4">
-            <div className="space-y-1">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">Preview</p>
-              <h2 className="text-xl font-semibold text-foreground">Crop and frame the active image</h2>
+          <Card className="space-y-5 rounded-[1.9rem] p-5 sm:p-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">Live preview</p>
+                <h2 className="text-xl font-semibold text-foreground">Check framing before export</h2>
+                <p className="text-sm leading-7 text-foreground/62">
+                  Crop mode gives manual framing. Fit and fill keep straightforward batches fast.
+                </p>
+              </div>
+              <div className="rounded-full border border-border bg-white/84 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-brand-navy">
+                {config.width} x {config.height}
+              </div>
             </div>
             {activeItem ? (
-              <div className="space-y-4">
-                <div className="relative min-h-[420px] overflow-hidden rounded-[1.5rem] border border-border bg-[#0f1819]">
+              <div className="preview-swap-in space-y-4" key={activeItem.id}>
+                <div className="relative min-h-[420px] overflow-hidden rounded-[1.65rem] border border-border bg-[#0f1819] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                   {config.resizeMode === "crop" ? (
                     <Cropper
                       aspect={config.width / config.height}
@@ -517,14 +571,32 @@ export function ToolShell({
                     />
                   )}
                 </div>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-[1.2rem] border border-border bg-white/82 px-4 py-3">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-foreground/46">Active file</p>
+                    <p className="mt-2 truncate text-sm font-semibold text-foreground">{activeItem.fileName}</p>
+                  </div>
+                  <div className="rounded-[1.2rem] border border-border bg-white/82 px-4 py-3">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-foreground/46">Source size</p>
+                    <p className="mt-2 text-sm font-semibold text-foreground">
+                      {activeItem.width} x {activeItem.height}
+                    </p>
+                  </div>
+                  <div className="rounded-[1.2rem] border border-border bg-white/82 px-4 py-3">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-foreground/46">Mode</p>
+                    <p className="mt-2 text-sm font-semibold capitalize text-foreground">{config.resizeMode}</p>
+                  </div>
+                </div>
                 {config.resizeMode === "crop" ? (
-                  <label className="space-y-2 text-sm text-foreground/68">
+                  <label className="space-y-2 rounded-[1.4rem] border border-border bg-white/80 p-4 text-sm text-foreground/68">
                     <span className="flex items-center justify-between font-semibold text-foreground">
                       Zoom
-                      <span>{activeItem.zoom.toFixed(1)}x</span>
+                      <span className="rounded-full bg-accent-soft px-3 py-1 text-xs text-brand-navy">
+                        {activeItem.zoom.toFixed(1)}x
+                      </span>
                     </span>
                     <input
-                      className="w-full accent-[var(--accent)]"
+                      className="w-full accent-[var(--brand-blue)]"
                       max={3}
                       min={1}
                       onChange={(event) => {
@@ -542,23 +614,21 @@ export function ToolShell({
               </div>
             ) : (
               <div className="rounded-[1.5rem] border border-dashed border-border-strong bg-white/75 px-6 py-12 text-center text-sm leading-7 text-foreground/62">
-                Upload a few images to unlock preview, queue management, crop mode, and ZIP export.
+                Upload a few images to unlock preview, crop mode, queue management, and one-click ZIP export.
               </div>
             )}
           </Card>
-          <div className="rounded-[1.4rem] border border-border bg-white/75 px-5 py-4 text-sm leading-7 text-foreground/68">
-            Tip: use <strong>fit</strong> when you want the whole image preserved, <strong>fill</strong> when you want
-            automatic edge-to-edge framing, and <strong>crop</strong> when you want manual control over the final cut.
-          </div>
-        </div>
-        <div className="space-y-6">
-          <ResizeControls
-            busy={isProcessing}
-            config={config}
-            onConfigChange={updateConfig}
-            onDimensionChange={updateDimensions}
-            onReset={resetAll}
+
+          <BatchQueue
+            activeImageId={activeImageId}
+            items={items}
+            onClearAll={clearAll}
+            onRemoveImage={removeImage}
+            onSelectImage={setActiveImageId}
           />
+        </div>
+
+        <div className="space-y-6 xl:sticky xl:top-24 xl:self-start">
           <DownloadPanel
             busy={isProcessing}
             configSummary={{
@@ -575,6 +645,14 @@ export function ToolShell({
             onProcessAll={() => void processAllImages()}
             onSavePreset={() => void savePreset()}
           />
+          <Card className="rounded-[1.8rem] p-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">Quick guide</p>
+            <ol className="mt-4 space-y-3 text-sm leading-7 text-foreground/66">
+              <li>1. Drop one image or a full batch.</li>
+              <li>2. Pick a preset or type an exact size.</li>
+              <li>3. Process locally and download ready files.</li>
+            </ol>
+          </Card>
           {!items.length ? (
             <Button fullWidth onClick={() => applyPreset(config.presetSlug ?? "instagram-post")} variant="secondary">
               Try the Instagram preset

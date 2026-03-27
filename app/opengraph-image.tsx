@@ -14,37 +14,65 @@ export default function OpenGraphImage() {
     (
       <div
         style={{
-          display: "flex",
-          height: "100%",
-          width: "100%",
+          alignItems: "stretch",
           background:
-            "linear-gradient(135deg, rgba(18,122,107,0.95) 0%, rgba(11,91,80,0.96) 55%, rgba(15,24,25,0.96) 100%)",
-          color: "white",
-          fontFamily: "sans-serif",
-          padding: "64px",
+            "radial-gradient(circle at 72% 22%, rgba(19,214,215,0.18), transparent 18%), radial-gradient(circle at 14% 12%, rgba(18,122,107,0.16), transparent 24%), linear-gradient(180deg, rgba(255,255,255,0.78), rgba(245,244,239,1) 62%)",
+          color: "#132125",
+          display: "flex",
           flexDirection: "column",
+          height: "100%",
+          fontFamily: "sans-serif",
           justifyContent: "space-between",
+          padding: "58px 70px",
+          width: "100%",
         }}
       >
         <div
           style={{
-            display: "flex",
             alignItems: "center",
+            display: "flex",
             gap: 18,
-            fontSize: 24,
-            textTransform: "uppercase",
-            letterSpacing: "0.3em",
+            opacity: 0.88,
           }}
         >
-          <BrandMark style={{ height: 64, width: 64 }} title="PrivacyResize" />
-          PrivacyResize
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <div style={{ fontSize: 68, lineHeight: 1.04, fontWeight: 700, maxWidth: "80%" }}>
-            Resize, crop, compress, and export image batches locally.
+          <BrandMark style={{ height: 74, width: 74 }} title="PrivacyResize" />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+            }}
+          >
+            <div
+              style={{
+                color: "rgba(19,33,37,0.62)",
+                fontSize: 18,
+                fontWeight: 600,
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+              }}
+            >
+              Secure image resizer
+            </div>
+            <div
+              style={{
+                display: "flex",
+                fontSize: 34,
+                fontWeight: 700,
+                letterSpacing: "-0.04em",
+              }}
+            >
+              <span style={{ color: "#132125" }}>Privacy</span>
+              <span style={{ color: "#127A6B", textShadow: "0 0 22px rgba(19,214,215,0.22)" }}>Resize</span>
+            </div>
           </div>
-          <div style={{ fontSize: 28, opacity: 0.86, maxWidth: "72%" }}>
-            Secure image resizing with privacy-first local processing.
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: "76%" }}>
+          <div style={{ color: "#132125", fontSize: 68, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1.02 }}>
+            Resize, crop, and export image batches without default uploads.
+          </div>
+          <div style={{ color: "rgba(19,33,37,0.72)", fontSize: 28, lineHeight: 1.35 }}>
+            PrivacyResize keeps the core workflow in the browser, then gives creators and teams clean files fast.
           </div>
         </div>
       </div>

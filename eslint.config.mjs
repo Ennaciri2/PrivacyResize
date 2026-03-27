@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "coverage/**",
+    "dataconnect/**",
+    "dataconnect-generated/**",
     "playwright-report/**",
     "test-results/**",
     "next-env.d.ts",

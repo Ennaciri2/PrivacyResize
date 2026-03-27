@@ -15,14 +15,14 @@ export default function Icon() {
       <div
         style={{
           alignItems: "center",
-          background: "linear-gradient(180deg, #0d1720 0%, #112735 100%)",
+          background: "transparent",
           display: "flex",
           height: "100%",
           justifyContent: "center",
           width: "100%",
         }}
       >
-        <BrandMark style={{ height: 56, width: 56 }} title="PrivacyResize icon" />
+        <BrandMark style={{ height: 64, width: 64 }} title="PrivacyResize icon" />
       </div>
     ),
     size,

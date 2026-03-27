@@ -15,35 +15,137 @@ export function BrandMark({ className, style, title = "PrivacyResize" }: BrandMa
       className={cn("size-10 shrink-0", className)}
       role="img"
       style={style}
-      viewBox="0 0 64 64"
+      viewBox="0 0 240 240"
       xmlns="http://www.w3.org/2000/svg"
     >
       <title>{title}</title>
-      <path
-        d="M32 3 49.5 8.8a4.3 4.3 0 0 1 3 4.1v14.9c0 12.2-7.1 23.2-18.3 28.2a5.7 5.7 0 0 1-4.4 0C18.6 51 11.5 40 11.5 27.8V12.9a4.3 4.3 0 0 1 3-4.1L32 3Z"
-        fill="#0B2D55"
+      <defs>
+        <linearGradient id="pr-bg" x1="28" x2="210" y1="24" y2="216" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#148978" />
+          <stop offset="0.5" stopColor="#0F5F54" />
+          <stop offset="1" stopColor="#0B2D55" />
+        </linearGradient>
+        <linearGradient id="pr-frame" x1="47" x2="194" y1="42" y2="198" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#13D6D7" />
+          <stop offset="1" stopColor="#18F0E1" />
+        </linearGradient>
+        <linearGradient id="pr-screen" x1="81" x2="167" y1="78" y2="162" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#0D7164" />
+          <stop offset="0.5" stopColor="#0C6358" />
+          <stop offset="1" stopColor="#0B2D55" />
+        </linearGradient>
+        <linearGradient id="pr-image" x1="82" x2="154" y1="110" y2="164" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#17E8E6" />
+          <stop offset="1" stopColor="#127A6B" />
+        </linearGradient>
+        <linearGradient id="pr-arrow" x1="97" x2="157" y1="126" y2="80" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#13D6D7" />
+          <stop offset="1" stopColor="#147EEF" />
+        </linearGradient>
+      </defs>
+
+      <rect
+        fill="url(#pr-bg)"
+        height="232"
+        rx="42"
+        stroke="#083D37"
+        strokeWidth="4"
+        width="232"
+        x="4"
+        y="4"
       />
-      <path
-        d="M14 14.4c0-1.5 1-2.9 2.5-3.4L32 6l15.5 5a3.5 3.5 0 0 1 2.5 3.4v8.1c-6.7 5.2-15 8-24.4 8.1-4.6 0-8.5-.7-11.6-2.1V14.4Z"
-        fill="#13D6D7"
+      <rect
+        fill="none"
+        height="216"
+        opacity="0.16"
+        rx="36"
+        stroke="#8BF8EF"
+        strokeWidth="2"
+        width="216"
+        x="12"
+        y="12"
       />
+
       <path
-        d="M15.2 29.8c3.3 1.4 7 2.1 11.2 2.1 9.4-.1 17.3-2.9 23.6-8.2v4.1c0 11.1-6.4 21.2-16.6 25.8a4 4 0 0 1-3 0c-7.2-3.2-12.5-9.4-15.2-16.7V29.8Z"
-        fill="#147EEF"
-      />
-      <rect fill="none" height="18" rx="2.8" stroke="#FFF" strokeWidth="3.5" width="27" x="17" y="18" />
-      <circle cx="23.5" cy="24.3" fill="#FFF" r="3.1" />
-      <path d="M20 34.3h21v-1.7l-6.3-7.2-6.1 6-4.9-3.8-3.7 3.6v3.1Z" fill="#FFF" />
-      <path
-        d="m22.2 33.1 9.1 3-2.8 1.8 4.8 4.9-3.6 3.4-4.8-5-1.9 2.6-2.7-10.7Z"
-        fill="#FFF"
-        stroke="#0B2D55"
+        d="M48 73V54c0-5.52 4.48-10 10-10h19"
+        fill="none"
+        stroke="url(#pr-frame)"
+        strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="1.3"
+        strokeWidth="12"
       />
-      <path d="M41.2 22.8h3.3a4.5 4.5 0 0 1 4.5 4.5v8.5H36.7v-8.5a4.5 4.5 0 0 1 4.5-4.5Z" fill="#FFF" />
-      <path d="M40.2 22.8v-1.4a2.7 2.7 0 1 1 5.4 0v1.4" fill="none" stroke="#FFF" strokeWidth="2" />
-      <path d="M42.6 29.8a2.2 2.2 0 1 1 3.9 1.4l-.4.5v1.8h-1.8v-1.8l-.4-.5a2.1 2.1 0 0 1-.4-1.4Z" fill="#0B2D55" />
+      <path
+        d="M191 73V54c0-5.52-4.48-10-10-10h-19"
+        fill="none"
+        stroke="url(#pr-frame)"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="12"
+      />
+      <path
+        d="M48 167v19c0 5.52 4.48 10 10 10h19"
+        fill="none"
+        stroke="url(#pr-frame)"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="12"
+      />
+      <path
+        d="M191 167v19c0 5.52-4.48 10-10 10h-19"
+        fill="none"
+        stroke="url(#pr-frame)"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="12"
+      />
+
+      <rect
+        fill="url(#pr-screen)"
+        height="96"
+        rx="16"
+        stroke="#093F48"
+        strokeWidth="5"
+        width="108"
+        x="68"
+        y="76"
+      />
+      <rect
+        fill="none"
+        height="84"
+        opacity="0.5"
+        rx="12"
+        stroke="#84F3EC"
+        strokeWidth="2"
+        width="96"
+        x="74"
+        y="82"
+      />
+      <rect fill="url(#pr-image)" height="60" rx="11" width="78" x="82" y="100" />
+      <circle cx="101" cy="123" fill="#B7FFF7" r="10" />
+      <path d="M82 153v-12l20-18 18 14 17-16 23 21v11H82Z" fill="#0B5B50" opacity="0.95" />
+      <path
+        d="m112 136 29-30M132 106h21v21"
+        fill="none"
+        stroke="url(#pr-arrow)"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="10"
+      />
+
+      <g transform="translate(142 104)">
+        <path
+          d="M11 23v-6c0-8.28 6.72-15 15-15s15 6.72 15 15v6"
+          fill="none"
+          stroke="#FFFFFF"
+          strokeLinecap="round"
+          strokeWidth="9"
+        />
+        <rect fill="#FFFFFF" height="54" rx="12" width="56" x="2" y="21" />
+        <path
+          d="M31 39a7.5 7.5 0 0 1 4.37 13.6v8.9h-8.74v-8.9A7.5 7.5 0 0 1 31 39Z"
+          fill="#0B5B50"
+        />
+      </g>
     </svg>
   );
 }

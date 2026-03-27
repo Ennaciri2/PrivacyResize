@@ -10,7 +10,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "glass-card rounded-[1.5rem] border border-border bg-surface px-5 py-5",
+        "premium-panel rounded-[1.75rem] px-5 py-5",
         className,
       )}
       {...props}
